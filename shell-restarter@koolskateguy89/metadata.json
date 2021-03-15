@@ -1,5 +1,5 @@
 {
-  "description": "Tired of pressing Ctrl+Alt+r?\nWell you can restart GNOME Shell with just the press of a button! (Probably won't work on Wayland)",
+  "description": "Tired of pressing Ctrl+Alt+r?\nWell you can restart GNOME Shell with just the press of a button!\n(Probably won't work on Wayland)",
   "name": "Shell Restarter",
   "settings-schema": "org.gnome.shell.extensions.shell-restarter",
   "shell-version": [
