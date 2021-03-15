@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist>
+  <schema id="org.gnome.shell.extensions.shell-restarter" path="/org/gnome/shell/extensions/shell-restarter/">
+
+    <key name="restart-message" type="s">
+      <default>'Restarting...'</default>
+    </key>
+
+  </schema>
+</schemalist>
