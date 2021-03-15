@@ -10,7 +10,6 @@ const Me = ExtensionUtils.getCurrentExtension();
 const settings = (function() {
     const GioSSS = Gio.SettingsSchemaSource;
 
-    // Load schema
     let schemaSource = GioSSS.new_from_directory(
         Me.dir.get_child('schemas').get_path(),
         GioSSS.get_default(),
@@ -25,7 +24,6 @@ const settings = (function() {
     if (!schemaObj)
         throw new Error(`Schema could not be found for extension ${Me.metadata.uuid}. Please check your installation`);
 
-    // Load settings from schema
     return new Gio.Settings({ settings_schema: schemaObj });
 })();
 
@@ -42,12 +40,12 @@ const RestartButton = new Lang.Class({
             reactive: true,
 		});
 
-		this.button.connect('button-press-event', () => Meta.restart(settings.get_string('restart-message') || "Restarting..."/*Don't allow blank*/));
+		this.button.connect('button-press-event', restart);
 
 		if ((typeof this.add_child) === 'function')
 			this.add_child(this.button);
 		else
-			this.actor.add_actor(this.button);	// depracated in newer GNOME versions
+			this.actor.add_actor(this.button);	// deprecated in newer GNOME versions
 
 		Main.panel.addToStatusArea('shell-restarter', this);
 	},
@@ -58,6 +56,11 @@ const RestartButton = new Lang.Class({
 		this.parent();
 	}
 });
+
+function restart() {
+	// Don't allow blank restart message - or maybe it should?
+	Meta.restart(settings.get_string('restart-message') || "Restarting...");
+}
 
 var container;
 
