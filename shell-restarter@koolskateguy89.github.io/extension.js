@@ -9,6 +9,7 @@ const Me = ExtensionUtils.getCurrentExtension();
 
 const settings = (function() {
     const GioSSS = Gio.SettingsSchemaSource;
+	const schemaId = Me.metadata['settings-schema'];
 
     let schemaSource = GioSSS.new_from_directory(
         Me.dir.get_child('schemas').get_path(),
@@ -17,7 +18,7 @@ const settings = (function() {
     );
 
     let schemaObj = schemaSource.lookup(
-        'org.gnome.shell.extensions.shell-restarter',
+        schemaId,
         true
     );
 
