@@ -3,7 +3,7 @@
   "name": "Shell Restarter",
   "settings-schema": "org.gnome.shell.extensions.shell-restarter",
   "shell-version": [
-    "3.36.4"
+    "3.36.4","3.38","40.0"
   ],
   "url": "https://github.com/koolskateguy89/gnome-shell-extension-shell-restarter",
   "uuid": "shell-restarter@koolskateguy89.github.io",
