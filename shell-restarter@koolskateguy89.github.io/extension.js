@@ -9,7 +9,7 @@ const Me = ExtensionUtils.getCurrentExtension();
 
 const settings = (function() {
     const GioSSS = Gio.SettingsSchemaSource;
-	const schemaId = Me.metadata['settings-schema'];
+    const schemaId = Me.metadata['settings-schema'];
 
     let schemaSource = GioSSS.new_from_directory(
         Me.dir.get_child('schemas').get_path(),
@@ -29,38 +29,39 @@ const settings = (function() {
 })();
 
 const RestartButton = new Lang.Class({
-	Name: 'Shell-Restarter',
-	Extends: PanelMenu.Button,
+    Name: 'Shell-Restarter',
+    Extends: PanelMenu.Button,
 
-	_init: function() {
-		this.parent(0, 'Shell-Restarter');
+    _init: function() {
+        this.parent(0, 'Shell-Restarter');
 
-		this.button = new St.Icon({
+        this.button = new St.Icon({
             icon_name : 'view-refresh-symbolic',
-        	style_class : 'system-status-icon',
+            style_class : 'system-status-icon',
             reactive: true,
-		});
+        });
 
-		this.button.connect('button-press-event', restart);
+        this.button.connect('button-press-event', restart);
 
-		if ((typeof this.add_child) === 'function')
-			this.add_child(this.button);
-		else
-			this.actor.add_actor(this.button);	// deprecated in newer GNOME versions
+        if ((typeof this.add_child) === 'function')
+            this.add_child(this.button);
+        else
+            this.actor.add_actor(this.button);	// deprecated in newer GNOME versions
 
-		Main.panel.addToStatusArea('shell-restarter', this);
-	},
+        Main.panel.addToStatusArea('shell-restarter', this);
+    },
 
-	destroy: function() {
-		this.button.destroy();
+    destroy: function() {
+        this.button.destroy();
 
-		this.parent();
-	}
+        this.parent();
+    }
 });
 
 function restart() {
-	// Don't allow blank restart message - or maybe it should?
-	Meta.restart(settings.get_string('restart-message') || "Restarting...");
+    // Don't allow blank restart message - or maybe it should?
+    // doesn't show in gnome 40 (+?) for me
+    Meta.restart(settings.get_string('restart-message') || "Restarting...");
 }
 
 var container;
@@ -69,9 +70,9 @@ function init() {
 }
 
 function enable() {
-	container = new RestartButton();
+    container = new RestartButton();
 }
 
 function disable() {
-	container.destroy();
+    container.destroy();
 }
