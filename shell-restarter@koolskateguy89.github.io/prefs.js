@@ -3,6 +3,10 @@ const { Gio, Gtk } = imports.gi;
 const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
 
+const Config = imports.misc.config;
+const [major] = Config.PACKAGE_VERSION.split('.');
+const shellVersion = Number.parseInt(major);
+
 const settings = (function() {
     const GioSSS = Gio.SettingsSchemaSource;
 
@@ -31,15 +35,28 @@ function init() {
 function buildPrefsWidget() {
 
     let prefsWidget = new Gtk.Grid({
-        margin: 18,
-        column_spacing: 12,
-        row_spacing: 12,
-        visible: true,
-        column_homogeneous: true,
+        ...{
+            column_spacing: 12,
+            row_spacing: 12,
+            visible: true,
+            column_homogeneous: true,
+        },
+        ...(shellVersion >= 40 ?
+            {
+                margin_top: 18,
+                margin_bottom: 18,
+                margin_start: 18,
+                margin_end: 18,
+            }
+            :
+            {
+                margin: 18,
+            }
+        ),
     });
 
     let label = new Gtk.Label({
-        label: 'Restart message:',
+        label: 'Restart message: (may not show on Gnome 40+)',
         halign: Gtk.Align.START,
         visible: true,
     });
@@ -52,8 +69,18 @@ function buildPrefsWidget() {
 
     // TODO: add checkbox/button or smthn to change to default
 
+    let defaultButton = new Gtk.Button({
+        label: 'Reset to default',
+    });
+
+    defaultButton.connect('clicked', () => {
+        settings.set_string('restart-message', 'Restarting...');
+    });
+
     prefsWidget.attach(label, 0, 0, 1, 1);
     prefsWidget.attach(entry, 1, 0, 1, 1);
+
+    prefsWidget.attach(defaultButton, 0, 1, 2, 1);
 
     settings.bind('restart-message', entry, 'text', Gio.SettingsBindFlags.DEFAULT);
 
