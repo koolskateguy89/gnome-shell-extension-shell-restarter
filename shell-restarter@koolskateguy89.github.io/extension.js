@@ -1,33 +1,43 @@
-const { Gio, Meta, St } = imports.gi;
+const { Gio, Meta, St, GObject } = imports.gi;
 
 const Lang = imports.lang;
 const Main = imports.ui.main;
 const PanelMenu = imports.ui.panelMenu;
 
 const ExtensionUtils = imports.misc.extensionUtils;
-const Me = ExtensionUtils.getCurrentExtension();
+const settings = ExtensionUtils.getSettings();
 
-const settings = (function() {
-    const GioSSS = Gio.SettingsSchemaSource;
-    const schemaId = Me.metadata['settings-schema'];
+let container;
 
-    let schemaSource = GioSSS.new_from_directory(
-        Me.dir.get_child('schemas').get_path(),
-        GioSSS.get_default(),
-        false
-    );
+const RestartButton = GObject.registerClass({
+    GTypeName: 'RestartButton',
+}, class RestartButton extends PanelMenu.Button {
+    _init() {
+        super._init();
 
-    let schemaObj = schemaSource.lookup(
-        schemaId,
-        true
-    );
+        this.button = new St.Icon({
+            icon_name : 'view-refresh-symbolic',
+            style_class : 'system-status-icon',
+            reactive: true,
+        });
 
-    if (!schemaObj)
-        throw new Error(`Schema could not be found for extension ${Me.metadata.uuid}. Please check your installation`);
+        this.button.connect('button-press-event', restart);
 
-    return new Gio.Settings({ settings_schema: schemaObj });
-})();
+        if ((typeof this.add_child) === 'function')
+            this.add_child(this.button);
+        else
+            this.actor.add_actor(this.button);	// deprecated in newer GNOME versions
 
+        Main.panel.addToStatusArea('shell-restarter', this);
+    }
+
+    destroy() {
+        this.button.destroy();
+        super.destroy();
+    }
+});
+
+/*
 const RestartButton = new Lang.Class({
     Name: 'Shell-Restarter',
     Extends: PanelMenu.Button,
@@ -57,6 +67,7 @@ const RestartButton = new Lang.Class({
         this.parent();
     }
 });
+*/
 
 function restart() {
     // Don't allow blank restart message - or maybe it should?
@@ -64,15 +75,17 @@ function restart() {
     Meta.restart(settings.get_string('restart-message') || "Restarting...");
 }
 
-var container;
-
 function init() {
+    log("init");
 }
 
 function enable() {
+    log("enable");
     container = new RestartButton();
 }
 
 function disable() {
+    log("disable");
     container.destroy();
+    container = null;
 }

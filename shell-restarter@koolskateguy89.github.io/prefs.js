@@ -1,39 +1,16 @@
 const { Gio, Gtk } = imports.gi;
 
 const ExtensionUtils = imports.misc.extensionUtils;
-const Me = ExtensionUtils.getCurrentExtension();
+const settings = ExtensionUtils.getSettings();
 
 const Config = imports.misc.config;
 const [major] = Config.PACKAGE_VERSION.split('.');
 const shellVersion = Number.parseInt(major);
 
-const settings = (function() {
-    const GioSSS = Gio.SettingsSchemaSource;
-
-    // Load schema
-    let schemaSource = GioSSS.new_from_directory(
-        Me.dir.get_child('schemas').get_path(),
-        GioSSS.get_default(),
-        false
-    );
-
-    let schemaObj = schemaSource.lookup(
-        'org.gnome.shell.extensions.shell-restarter',
-        true
-    );
-
-    if (!schemaObj)
-        throw new Error(`Schema could not be found for extension ${Me.metadata.uuid}. Please check your installation`);
-
-    // Load settings from schema
-    return new Gio.Settings({ settings_schema: schemaObj });
-})();
-
 function init() {
 }
 
 function buildPrefsWidget() {
-
     let prefsWidget = new Gtk.Grid({
         ...{
             column_spacing: 12,
@@ -66,8 +43,6 @@ function buildPrefsWidget() {
         halign: Gtk.Align.END,
         visible: true,
     });
-
-    // TODO: add checkbox/button or smthn to change to default
 
     let defaultButton = new Gtk.Button({
         label: 'Reset to default',
