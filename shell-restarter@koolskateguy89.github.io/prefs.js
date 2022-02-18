@@ -52,7 +52,7 @@ function buildPrefsWidget() {
         settings.set_string('restart-message', 'Restarting...');
     });
 
-    prefsWidget.attach(label, 0, 0, 1, 1);
+    prefsWidget.attach(label, column = 0, row = 0, width = 1, height = 1);
     prefsWidget.attach(entry, 1, 0, 1, 1);
 
     prefsWidget.attach(defaultButton, 0, 1, 2, 1);
