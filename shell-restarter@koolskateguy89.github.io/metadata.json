@@ -1,12 +1,13 @@
 {
-  "description": "Tired of pressing Alt+F2+R?\nWell you can restart GNOME Shell with just the press of a button! (May or may not work on Wayland)",
   "name": "Shell Restarter",
-  "settings-schema": "org.gnome.shell.extensions.shell-restarter",
+  "description": "Tired of pressing Alt+F2+R?\nWell you can restart GNOME Shell with just the press of a button! (May or may not work on Wayland)",
   "shell-version": [
-    "3.36.4",
+    "3.36",
+    "3.38",
     "40"
   ],
+  "settings-schema": "org.gnome.shell.extensions.shell-restarter",
   "url": "https://github.com/koolskateguy89/gnome-shell-extension-shell-restarter",
   "uuid": "shell-restarter@koolskateguy89.github.io",
-  "version": 2
+  "version": 4
 }
