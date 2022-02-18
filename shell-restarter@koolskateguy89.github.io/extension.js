@@ -37,38 +37,6 @@ const RestartButton = GObject.registerClass({
     }
 });
 
-/*
-const RestartButton = new Lang.Class({
-    Name: 'Shell-Restarter',
-    Extends: PanelMenu.Button,
-
-    _init: function() {
-        this.parent(0, 'Shell-Restarter');
-
-        this.button = new St.Icon({
-            icon_name : 'view-refresh-symbolic',
-            style_class : 'system-status-icon',
-            reactive: true,
-        });
-
-        this.button.connect('button-press-event', restart);
-
-        if ((typeof this.add_child) === 'function')
-            this.add_child(this.button);
-        else
-            this.actor.add_actor(this.button);	// deprecated in newer GNOME versions
-
-        Main.panel.addToStatusArea('shell-restarter', this);
-    },
-
-    destroy: function() {
-        this.button.destroy();
-
-        this.parent();
-    }
-});
-*/
-
 function restart() {
     // Don't allow blank restart message - or maybe it should?
     // doesn't show in gnome 40 (+?) for me
@@ -76,16 +44,13 @@ function restart() {
 }
 
 function init() {
-    log("init");
 }
 
 function enable() {
-    log("enable");
     container = new RestartButton();
 }
 
 function disable() {
-    log("disable");
     container.destroy();
     container = null;
 }
