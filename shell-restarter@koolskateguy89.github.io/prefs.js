@@ -15,7 +15,6 @@ function buildPrefsWidget() {
         ...{
             column_spacing: 12,
             row_spacing: 12,
-            visible: true,
             column_homogeneous: true,
         },
         ...(shellVersion >= 40 ?
@@ -35,13 +34,11 @@ function buildPrefsWidget() {
     let label = new Gtk.Label({
         label: 'Restart message: (may not show on Gnome 40+)',
         halign: Gtk.Align.START,
-        visible: true,
     });
 
     let entry = new Gtk.Entry({
         text: settings.get_string('restart-message'),
         halign: Gtk.Align.END,
-        visible: true,
     });
 
     let defaultButton = new Gtk.Button({

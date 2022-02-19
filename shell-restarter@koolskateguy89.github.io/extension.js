@@ -1,17 +1,15 @@
-const { Gio, Meta, St, GObject } = imports.gi;
+const { Meta, St, GObject } = imports.gi;
 
-const Lang = imports.lang;
 const Main = imports.ui.main;
 const PanelMenu = imports.ui.panelMenu;
 
 const ExtensionUtils = imports.misc.extensionUtils;
-const settings = ExtensionUtils.getSettings();
 
-let container;
+let settings;
+let restartButton;
 
-const RestartButton = GObject.registerClass({
-    GTypeName: 'RestartButton',
-}, class RestartButton extends PanelMenu.Button {
+const RestartButton = GObject.registerClass(
+class RestartButton extends PanelMenu.Button {
     _init() {
         super._init();
 
@@ -47,10 +45,13 @@ function init() {
 }
 
 function enable() {
-    container = new RestartButton();
+    settings = ExtensionUtils.getSettings();
+    restartButton = new RestartButton();
 }
 
 function disable() {
-    container.destroy();
-    container = null;
+    settings = null;
+
+    restartButton.destroy();
+    restartButton = null;
 }
