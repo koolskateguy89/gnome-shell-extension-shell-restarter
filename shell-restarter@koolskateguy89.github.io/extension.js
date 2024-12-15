@@ -38,7 +38,11 @@ class RestartButton extends PanelMenu.Button {
 function restart() {
     // Don't allow blank restart message - or maybe it should?
     // doesn't show in gnome 40 (+?) for me
-    Meta.restart(settings.get_string('restart-message') || "Restarting...");
+    if (Number(imports.misc.config.LIBMUTTER_API_VERSION) < 11) {
+		Meta.restart(settings.get_string('restart-message') || "Restarting...");
+    } else {
+	    Meta.restart(settings.get_string('restart-message') || "Restarting...", global.context);
+    }
 }
 
 function init() {
