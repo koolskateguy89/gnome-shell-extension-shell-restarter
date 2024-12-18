@@ -10,5 +10,5 @@
   "settings-schema": "org.gnome.shell.extensions.shell-restarter",
   "url": "https://github.com/koolskateguy89/gnome-shell-extension-shell-restarter",
   "uuid": "shell-restarter@koolskateguy89.github.io",
-  "version": 5
+  "version": 6
 }
