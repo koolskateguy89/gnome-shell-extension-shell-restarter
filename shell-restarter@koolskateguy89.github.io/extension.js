@@ -5,6 +5,9 @@ const PanelMenu = imports.ui.panelMenu;
 
 const ExtensionUtils = imports.misc.extensionUtils;
 
+// https://discourse.gnome.org/t/retrieve-api-version-in-a-gnome-shell-extension/25623
+const gnomeAPIVersion = Number(imports.misc.config.LIBMUTTER_API_VERSION);
+
 let settings;
 let restartButton;
 
@@ -38,10 +41,12 @@ class RestartButton extends PanelMenu.Button {
 function restart() {
     // Don't allow blank restart message - or maybe it should?
     // doesn't show in gnome 40 (+?) for me
-    if (Number(imports.misc.config.LIBMUTTER_API_VERSION) < 11) {
-		Meta.restart(settings.get_string('restart-message') || "Restarting...");
+    const restartMessage = settings.get_string('restart-message') || "Restarting...";
+    // Meta.restart API changed in gnome API v11
+    if (gnomeAPIVersion < 11) {
+        Meta.restart(restartMessage);
     } else {
-	    Meta.restart(settings.get_string('restart-message') || "Restarting...", global.context);
+        Meta.restart(restartMessage, global.context);
     }
 }
 
